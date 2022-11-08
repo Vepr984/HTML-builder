@@ -56,33 +56,29 @@ fs.mkdir(path.join(__dirname, 'project-dist', 'assets'), (err) => {
         console.log(err);
     }
 });
-// copy all files from the 'assets' directory to the 'project-dist/assets' directory
-fs.readdir(path.join(__dirname, 'assets'), (err, files) => {
+// copy all folders from the 'assets' directory to the 'project-dist/assets' directory. 
+fs.readdir(path.join(__dirname, 'assets'), (err, assets) => {
     if (err) {
         console.log(err);
     }
-    files.forEach(file => {
-        fs.copyFile(path.join(__dirname, 'assets', file), path.join(__dirname, 'project-dist', 'assets', file), (err) => {
+    assets.forEach(asset => {
+        fs.mkdir(path.join(__dirname, 'project-dist', 'assets', asset), (err) => {
             if (err) {
                 console.log(err);
             }
         });
+        fs.readdir(path.join(__dirname, 'assets', asset), (err, files) => {
+            if (err) {
+                console.log(err);
+            }
+            files.forEach(file => {
+                fs.copyFile(path.join(__dirname, 'assets', asset, file), path.join(__dirname, 'project-dist', 'assets', asset, file), (err) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                });
+            });
+        });
     });
-});
-
-
-
-
-
-// fs.readdir(path.join(__dirname, 'files'), (err, files) => {
-//     if (err) {
-//         console.log(err);
-//     }
-//     files.forEach(file => {
-//         fs.copyFile(path.join(__dirname, 'assets', file), path.join(__dirname, '.project-dist/assets', file), (err) => {
-//         if (err) {
-//             console.log(err);
-//         }
-//         });
-//     });
-// });
+}
+);
